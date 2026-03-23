@@ -6,7 +6,7 @@ data class Song(
     val id: String? = "",
     val title: String? = "",
     val artist: String? = "",
-    val cover: String? = "",
+    val cover: String? = null,
     val audio: String? = "",
     var lyrics: String? = null
 ) : Serializable

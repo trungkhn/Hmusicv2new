@@ -1,269 +1,288 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/player_background_gradient"
+    android:background="#FFFFFF"> <ImageView
+    android:id="@+id/btnBack"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="40dp"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:padding="12dp"
+    android:src="@drawable/ic_chevron_down"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:tint="#8e8e93" /> <LinearLayout
+    android:id="@+id/llHeader"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
     android:orientation="vertical"
-    android:padding="24dp">
+    app:layout_constraintBottom_toBottomOf="@id/btnBack"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/btnBack">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.15"
+        android:text="PLAYING FROM PLAYLIST"
+        android:textColor="#8e8e93"
+        android:textSize="10sp"
+        android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@android:drawable/ic_menu_revert"
-            app:tint="@color/text_primary"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hmusicv2 Playlist"
-            android:textColor="@color/text_primary"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"/>
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:tint="@color/text_secondary"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="sans-serif-bold"
+        android:text="Heavy Rotation"
+        android:textColor="#2d2f33"
+        android:textSize="14sp" />
+</LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginHorizontal="16dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="12dp">
+        android:id="@+id/cvCover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:outlineAmbientShadowColor="#33000000"
+        android:outlineSpotShadowColor="#33000000"
+        app:cardBackgroundColor="#e1e2e8"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/llSongInfo"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llHeader">
+
         <ImageView
             android:id="@+id/ivCoverBig"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery"/>
+            android:src="@android:drawable/ic_menu_gallery" />
     </androidx.cardview.widget.CardView>
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/llSongInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginHorizontal="16dp">
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/btnLike"
-            android:layout_marginEnd="16dp">
+            android:paddingEnd="16dp">
 
             <TextView
                 android:id="@+id/tvTitleBig"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tên Bài Hát"
-                android:textColor="@color/text_primary"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:maxLines="1"
-                android:ellipsize="end"/>
+                android:ellipsize="marquee"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="-0.02"
+                android:singleLine="true"
+                android:text="Midnight City Lights"
+                android:textColor="#2d2f33"
+                android:textSize="26sp" />
 
             <TextView
                 android:id="@+id/tvArtistBig"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tên Ca Sĩ"
-                android:textColor="@color/text_secondary"
-                android:textSize="16sp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
-                android:ellipsize="end"/>
+                android:text="The Digital Curator"
+                android:textColor="#FF2D55"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/btnLike"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@android:drawable/btn_star_big_off" />
-    </RelativeLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginBottom="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginBottom="16dp"
-            android:layout_marginHorizontal="16dp">
-
-            <TextView
-                android:id="@+id/tvSyncLyrics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:lines="3"
-                android:text="♪ Đang tải lời bài hát ♪"/>
-        </LinearLayout>
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:progress="0"
-            android:progressTint="@color/spotify_green"
-            android:progressBackgroundTint="#555555"
-            android:thumbTint="@color/spotify_green"
-            android:splitTrack="false" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingHorizontal="14dp">
-
-            <TextView
-                android:id="@+id/tvCurrentTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="00:00"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp"
-                android:layout_alignParentStart="true"/>
-
-            <TextView
-                android:id="@+id/tvTotalTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="00:00"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp"
-                android:layout_alignParentEnd="true"/>
-        </RelativeLayout>
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_heart_filled"
+            app:tint="#FF2D55" />
     </LinearLayout>
 
-    <LinearLayout
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:progress="30"
+        android:progressBackgroundTint="#dbdde3"
+        android:progressTint="#acadb1"
+        android:splitTrack="false"
+        android:thumbTint="#8e8e93"
+        app:layout_constraintBottom_toTopOf="@id/llTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/llTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@id/llControls">
+
+        <TextView
+            android:id="@+id/tvCurrentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="1:24"
+            android:textColor="#8e8e93"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvTotalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="-2:41"
+            android:textColor="#8e8e93"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="32dp"
         android:gravity="center"
-        android:layout_marginBottom="24dp">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/cvLyricsContainer">
+
+        <ImageView
+            android:id="@+id/btnShuffle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="@drawable/ic_shuffle"
+            app:tint="#8e8e93" />
 
         <ImageView
             android:id="@+id/btnPrev"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="14dp"
             android:src="@android:drawable/ic_media_previous"
-            app:tint="@color/text_primary"
-            android:layout_weight="1"/>
+            app:tint="#2d2f33" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btnPlayPause"
             android:layout_width="72dp"
             android:layout_height="72dp"
+            android:layout_marginHorizontal="16dp"
+            app:cardBackgroundColor="#FF2D55"
             app:cardCornerRadius="36dp"
-            app:cardBackgroundColor="@color/spotify_green"
-            android:layout_marginHorizontal="16dp">
+            app:cardElevation="0dp">
+
             <ImageView
                 android:id="@+id/ivPlayIcon"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="34dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:src="@android:drawable/ic_media_pause"
-                app:tint="@color/black"/>
+                android:src="@drawable/ic_play_modern"
+                app:tint="#FFFFFF" />
         </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/btnNext"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="14dp"
             android:src="@android:drawable/ic_media_next"
-            app:tint="@color/text_primary"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            app:tint="#2d2f33" />
 
-    <LinearLayout
+        <ImageView
+            android:id="@+id/btnUpNext"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            app:tint="#8e8e93" /> </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvLyricsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="32dp"
+        app:cardBackgroundColor="#F7F2F4"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_myplaces"
-            app:tint="@color/text_secondary"
-            android:layout_weight="1"/>
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_sort_alphabetically"
-            app:tint="@color/text_secondary"
-            android:layout_weight="1"/>
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_view"
-            app:tint="@color/text_secondary"
-            android:layout_weight="1"/>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="16dp">
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="16dp">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_myplaces"
-                app:tint="@color/text_secondary"
-                android:layout_weight="1"/>
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_sort_alphabetically"
-                app:tint="@color/text_secondary"
-                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-bold"
+                android:letterSpacing="0.1"
+                android:text="LYRICS"
+                android:textColor="#8e8e93"
+                android:textSize="10sp" />
 
             <ImageView
                 android:id="@+id/btnLyricsView"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_view"
-                app:tint="@color/text_secondary"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackgroundBorderless"/>
-        </LinearLayout>
-    </LinearLayout>
+                android:layout_alignParentEnd="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="2dp"
+                android:src="@android:drawable/ic_menu_zoom"
+                app:tint="#8e8e93" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tvSyncLyrics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-bold"
+                android:lineSpacingExtra="4dp"
+                android:maxLines="2"
+                android:text="♪ Đang tải lời bài hát ♪"
+                android:textColor="#2d2f33"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

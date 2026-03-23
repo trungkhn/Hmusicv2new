@@ -49,12 +49,16 @@ class MainActivity : AppCompatActivity() {
 
         rlMiniPlayer.setOnClickListener {
             val intent = Intent(this, PlayerActivity::class.java)
-            intent.putExtra("SONG_LIST", MyMediaPlayer.currentPlaylist)
+            // Cần ép kiểu as java.io.Serializable để tránh lỗi truyền dữ liệu
+            intent.putExtra("SONG_LIST", MyMediaPlayer.currentPlaylist as java.io.Serializable)
             intent.putExtra("SONG_POSITION", MyMediaPlayer.currentIndex)
             startActivity(intent)
         }
 
-        loadFragment(HomeFragment())
+        if (savedInstanceState == null) {
+            loadFragment(HomeFragment())
+        }
+
         bottomNav.setOnItemSelectedListener { item ->
             val fragment: Fragment = when (item.itemId) {
                 R.id.nav_home -> HomeFragment()
@@ -78,13 +82,18 @@ class MainActivity : AppCompatActivity() {
             rlMiniPlayer.visibility = View.VISIBLE
             val currentSong = MyMediaPlayer.currentPlaylist[MyMediaPlayer.currentIndex]
 
+            if (!currentSong.cover.isNullOrEmpty()) {
+                Glide.with(this)
+                    .load(currentSong.cover)
+                    .placeholder(R.drawable.ic_default_avatar)
+                    .error(R.drawable.ic_default_avatar)
+                    .into(imgMiniAlbum)
+            } else {
+                imgMiniAlbum.setImageResource(R.drawable.ic_default_avatar)
+            }
+
             tvMiniSongTitle.text = currentSong.title
             tvMiniArtist.text = currentSong.artist
-
-            // ✅ Đã thêm an toàn cho ảnh
-            if (currentSong.cover != null) {
-                Glide.with(this).load(currentSong.cover).into(imgMiniAlbum)
-            }
 
             val mediaPlayer = MyMediaPlayer.getMediaPlayer()
             if (mediaPlayer.isPlaying) {
@@ -111,7 +120,6 @@ class MainActivity : AppCompatActivity() {
 
         mediaPlayer.reset()
 
-        // ✅ Đã sửa lỗi chỗ này: Kiểm tra khác null trước khi phát
         val audioUrl = nextSong.audio
         if (audioUrl != null && audioUrl.startsWith("http")) {
             mediaPlayer.setDataSource(audioUrl)

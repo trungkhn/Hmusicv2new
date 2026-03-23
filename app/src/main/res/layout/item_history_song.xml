@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="110dp"
+    android:layout_width="140dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_marginEnd="16dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        app:cardCornerRadius="12dp"
-        app:cardBackgroundColor="#2A2A2A"
-        app:cardElevation="0dp">
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:outlineAmbientShadowColor="#4D000000"
+        android:outlineSpotShadowColor="#4D000000"
+        app:cardBackgroundColor="#e1e2e8"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="12dp">
 
         <ImageView
             android:id="@+id/ivHistoryCover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery"/>
+            android:src="@android:drawable/ic_menu_gallery" />
 
     </androidx.cardview.widget.CardView>
 
@@ -27,11 +29,25 @@
         android:id="@+id/tvHistoryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tên bài hát"
-        android:textColor="@color/white"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-bold"
+        android:letterSpacing="-0.01"
         android:maxLines="1"
-        android:ellipsize="end"/>
+        android:text="Tên bài hát"
+        android:textColor="#2d2f33"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:text="Nghệ sĩ"
+        android:textColor="#8e8e93"
+        android:textSize="13sp" />
 </LinearLayout>

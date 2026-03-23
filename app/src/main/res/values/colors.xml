@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
+    <color name="black">#1D1D1F</color> <color name="white">#FFFFFF</color>
 
-    <color name="spotify_green">#1DB954</color>
-    <color name="spotify_green_dark">#1AA34A</color>
+    <color name="spotify_green">#FF2D55</color>
+    <color name="spotify_green_dark">#D81B43</color>
 
-    <color name="bg_background">#000000</color> <color name="bg_card_grey">#1A1A1A</color> <color name="text_primary">#FFFFFF</color> <color name="text_secondary">#B3B3B3</color> <color name="icon_inactive">#B3B3B3</color>
+    <color name="bg_background">#FFFFFF</color>
+    <color name="bg_card_grey">#F5F5F7</color> <color name="text_primary">#1D1D1F</color>
+    <color name="text_secondary">#86868B</color> <color name="icon_inactive">#8E8E93</color> <color name="glass_white_20">#33FFFFFF</color>
+    <color name="glass_border">#4DFFFFFF</color>
 </resources>

@@ -3,47 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/player_background_gradient"
+    android:background="#ffffff"
     android:orientation="vertical"
-    android:paddingTop="56dp"
-    android:paddingHorizontal="16dp">
+    android:paddingTop="56dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
         android:layout_marginBottom="24dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_revert"
-            app:tint="@color/text_primary"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Music"
-            android:textColor="@color/text_primary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"/>
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="-0.02"
+            android:text="Library"
+            android:textColor="#2d2f33"
+            android:textSize="34sp" />
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_more"
-            app:tint="@color/text_secondary"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:src="@android:drawable/ic_menu_more"
+            app:tint="#FF2D55" />
     </RelativeLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
+        android:clipToPadding="false"
         android:scrollbars="none"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="16dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -54,52 +50,63 @@
                 android:id="@+id/cvFilterAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                app:cardBackgroundColor="#FF2D55"
                 app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="@color/spotify_green"
-                android:layout_marginEnd="12dp">
+                app:cardElevation="0dp">
+
                 <TextView
                     android:id="@+id/tvFilterAll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-bold"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
                     android:text="All"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:paddingHorizontal="24dp"
-                    android:paddingVertical="10dp"/>
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvFilterPlaylists"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                app:cardBackgroundColor="#f0f0f6"
                 app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="#282828"
-                android:layout_marginEnd="12dp">
+                app:cardElevation="0dp">
+
                 <TextView
                     android:id="@+id/tvFilterPlaylists"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Playlists"
-                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-medium"
                     android:paddingHorizontal="20dp"
-                    android:paddingVertical="10dp"/>
+                    android:paddingVertical="10dp"
+                    android:text="Playlists"
+                    android:textColor="#2d2f33"
+                    android:textSize="14sp" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvFilterLiked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                app:cardBackgroundColor="#f0f0f6"
                 app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="#282828"
-                android:layout_marginEnd="12dp">
+                app:cardElevation="0dp">
+
                 <TextView
                     android:id="@+id/tvFilterLiked"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Liked Songs"
-                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-medium"
                     android:paddingHorizontal="20dp"
-                    android:paddingVertical="10dp"/>
+                    android:paddingVertical="10dp"
+                    android:text="Liked Songs"
+                    android:textColor="#2d2f33"
+                    android:textSize="14sp" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </HorizontalScrollView>
@@ -108,8 +115,6 @@
         android:id="@+id/rvLikedSongs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="100dp"
         android:clipToPadding="false"
-        android:layout_marginTop="8dp"/>
-
-</LinearLayout>
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="160dp" /> </LinearLayout>

@@ -3,30 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/player_background_gradient"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="#F2F2F7"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hồ sơ"
+        android:textColor="#1D1D1F"
+        android:textSize="34sp"
+        android:fontFamily="sans-serif-black"
+        android:letterSpacing="-0.02"
+        android:layout_marginTop="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="32dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="56dp"
         android:layout_marginBottom="40dp">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            app:cardCornerRadius="55dp"
-            app:cardBackgroundColor="#282828"
-            app:cardElevation="0dp">
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:cardCornerRadius="60dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardElevation="8dp"
+            android:outlineAmbientShadowColor="#1A000000"
+            android:outlineSpotShadowColor="#1A000000">
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_default_avatar"
-                android:padding="22dp"
-                app:tint="#B3B3B3" />
+                android:scaleType="centerCrop"
+                app:tint="#C7C7CC" />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -34,27 +47,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đang tải..."
-            android:textColor="@color/white"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+            android:textColor="#1D1D1F"
+            android:textSize="24sp"
+            android:fontFamily="sans-serif-bold"
+            android:layout_marginTop="20dp"/>
 
-        <TextView
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thành viên Premium"
-            android:textColor="#B3B3B3"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
+            app:cardBackgroundColor="#FFE5EB"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thành viên Premium"
+                android:textColor="#FF2D55"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-bold"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"/>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="16dp"
-        app:cardBackgroundColor="#1A1A1A"
-        app:cardElevation="4dp"
-        android:layout_marginHorizontal="8dp">
+        android:layout_marginHorizontal="24dp"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,64 +90,118 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:paddingHorizontal="20dp"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/icEdit"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    app:tint="#8E8E93"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chỉnh sửa tên hiển thị"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:layout_centerVertical="true"/>
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@android:drawable/ic_menu_edit"
-                    android:layout_alignParentEnd="true"
+                    android:textColor="#1D1D1F"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium"
                     android:layout_centerVertical="true"
-                    app:tint="#535353"/>
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/icEdit"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_media_next"
+                    app:tint="#C7C7CC"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#333333"
-                android:layout_marginHorizontal="20dp"/>
+                android:layout_height="1dp"
+                android:background="#E5E5EA"
+                android:layout_marginStart="60dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:paddingHorizontal="20dp"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/icSettings"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_preferences"
+                    app:tint="#8E8E93"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cài đặt ứng dụng"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:layout_centerVertical="true"/>
+                    android:textColor="#1D1D1F"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/icSettings"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_media_next"
+                    app:tint="#C7C7CC"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#333333"
-                android:layout_marginHorizontal="20dp"/>
+                android:layout_height="1dp"
+                android:background="#E5E5EA"
+                android:layout_marginStart="60dp"/>
 
             <RelativeLayout
                 android:id="@+id/btnLogoutProfile"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:paddingHorizontal="20dp"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/icLogout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    app:tint="#FF3B30"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Đăng xuất"
-                    android:textColor="#FF5252"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:layout_centerVertical="true"/>
+                    android:textColor="#FF3B30"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-bold"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/icLogout"/>
             </RelativeLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
