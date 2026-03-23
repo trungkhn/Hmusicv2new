@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "700284976993",
+    "project_id": "hmusicv2",
+    "storage_bucket": "hmusicv2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700284976993:android:066af0a26c967caabfcf20",
+        "android_client_info": {
+          "package_name": "com.example.hmusicv2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdUyssKmcl1gsUaPLvtBcZgXgtFURRdR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

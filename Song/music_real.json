@@ -1,0 +1,18 @@
+{
+  "Songs": {
+    "song1": {
+        "id": "1",
+        "title": "Mai Về",
+        "artist": "Dfoxie37 x Myhoa / 37 SOUND",
+        "cover": "https://avatars.githubusercontent.com/u/70573330",
+        "audio": "https://github.com/trungkhn/Kho_Nhac_Hmusic/raw/refs/heads/main/mai_ve.mp3"
+    },
+    "song2": {
+      "id": "2",
+      "title": "Thanh Xuân",
+      "artist": "Da LAB",
+      "cover": "https://avatars.githubusercontent.com/u/62376217",
+      "audio": "https://github.com/trungkhn/Kho_Nhac_Hmusic/raw/refs/heads/main/thanh_xuan.mp3"
+    }
+  }
+}
