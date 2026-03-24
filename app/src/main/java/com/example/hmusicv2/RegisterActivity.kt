@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import android.widget.LinearLayout
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -29,7 +30,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val btnBackRegister = findViewById<ImageView>(R.id.btnBackRegister)
         val btnRegister = findViewById<CardView>(R.id.btnRegister)
-        val tvToLogin = findViewById<TextView>(R.id.tvToLogin)
+        val tvToLogin = findViewById<LinearLayout>(R.id.tvToLogin)
 
         val edtName = findViewById<EditText>(R.id.edtName)
         val edtEmail = findViewById<EditText>(R.id.edtEmail)

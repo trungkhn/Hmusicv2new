@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.google.firebase.auth.FirebaseAuth
+import android.widget.LinearLayout
 
 class LoginActivity : AppCompatActivity() {
 
@@ -23,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         val btnLogin = findViewById<CardView>(R.id.btnLogin)
-        val tvToRegister = findViewById<TextView>(R.id.tvToRegister)
+        val tvToRegister = findViewById<LinearLayout>(R.id.tvToRegister)
         val btnBackLogin = findViewById<ImageView>(R.id.btnBackLogin)
 
         // Ánh xạ 2 ô nhập liệu của em
@@ -44,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
             // Kiểm tra xem có nhập thiếu không
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Em nhớ nhập đầy đủ Email và Mật khẩu nha!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Vui lòng không để trống thông tin!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // Dừng lại, bắt nhập cho xong
             }
 
@@ -60,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
                         finishAffinity() // Quét sạch các màn hình ở ngoài cửa
                     } else {
                         // Khóa cửa (Sai pass, chưa có tài khoản, v.v.)
-                        Toast.makeText(this, "Sai thông tin rồi: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Nhập sai thông tin: ${task.exception?.message}", Toast.LENGTH_LONG).show()
                     }
                 }
         }
