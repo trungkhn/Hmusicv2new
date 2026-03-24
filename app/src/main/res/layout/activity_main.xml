@@ -33,19 +33,19 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minHeight="64dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/bg_glass_nav_with_border"
-        android:elevation="24dp"
-        android:paddingVertical="8dp"
-        app:itemIconSize="28dp"
+        android:elevation="16dp"
+        android:fitsSystemWindows="false"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        app:itemIconSize="26dp"
         app:itemIconTint="@color/nav_item_color_state"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintWidth_percent="0.95"
         app:menu="@menu/menu_bottom_nav" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
