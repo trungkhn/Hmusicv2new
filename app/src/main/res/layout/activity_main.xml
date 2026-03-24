@@ -20,6 +20,9 @@
         android:layout_marginBottom="12dp"
         android:background="@drawable/bg_glass_nav_with_border"
         android:elevation="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

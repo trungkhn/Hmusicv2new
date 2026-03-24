@@ -3,47 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"> <ImageView
-    android:id="@+id/btnBack"
-    android:layout_width="48dp"
-    android:layout_height="48dp"
-    android:layout_marginStart="12dp"
-    android:layout_marginTop="40dp"
-    android:background="?attr/selectableItemBackgroundBorderless"
-    android:padding="12dp"
-    android:src="@drawable/ic_chevron_down"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:tint="#8e8e93" /> <LinearLayout
-    android:id="@+id/llHeader"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="@id/btnBack"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/btnBack">
+    android:background="#FFFFFF">
 
-    <TextView
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="12dp"
+        android:src="@drawable/ic_chevron_down"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#8E8E93" />
+
+    <LinearLayout
+        android:id="@+id/llHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:letterSpacing="0.15"
-        android:text="PLAYING FROM PLAYLIST"
-        android:textColor="#8e8e93"
-        android:textSize="10sp"
-        android:textStyle="bold" />
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnBack">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:fontFamily="sans-serif-bold"
-        android:text="Heavy Rotation"
-        android:textColor="#2d2f33"
-        android:textSize="14sp" />
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.1"
+            android:text="PLAYING FROM PLAYLIST"
+            android:textColor="#8E8E93"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif-bold"
+            android:text="Midnight Melodies"
+            android:textColor="#1D1D1F"
+            android:textSize="14sp" />
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvCover"
@@ -51,11 +55,11 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:outlineAmbientShadowColor="#33000000"
-        android:outlineSpotShadowColor="#33000000"
-        app:cardBackgroundColor="#e1e2e8"
-        app:cardCornerRadius="32dp"
+        android:layout_marginBottom="32dp"
+        android:outlineAmbientShadowColor="#40000000"
+        android:outlineSpotShadowColor="#40000000"
+        app:cardBackgroundColor="#F2F2F7"
+        app:cardCornerRadius="24dp"
         app:cardElevation="24dp"
         app:layout_constraintBottom_toTopOf="@+id/llSongInfo"
         app:layout_constraintDimensionRatio="1:1"
@@ -96,8 +100,8 @@
                 android:fontFamily="sans-serif-black"
                 android:letterSpacing="-0.02"
                 android:singleLine="true"
-                android:text="Midnight City Lights"
-                android:textColor="#2d2f33"
+                android:text="Tên bài hát"
+                android:textColor="#1D1D1F"
                 android:textSize="26sp" />
 
             <TextView
@@ -108,7 +112,7 @@
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
-                android:text="The Digital Curator"
+                android:text="Tên nghệ sĩ"
                 android:textColor="#FF2D55"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -129,10 +133,10 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="8dp"
         android:progress="30"
-        android:progressBackgroundTint="#dbdde3"
-        android:progressTint="#acadb1"
+        android:progressBackgroundTint="#E5E5EA"
+        android:progressTint="#FF2D55"
         android:splitTrack="false"
-        android:thumbTint="#8e8e93"
+        android:thumbTint="#FF2D55"
         app:layout_constraintBottom_toTopOf="@id/llTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -151,8 +155,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:fontFamily="sans-serif-medium"
-            android:text="1:24"
-            android:textColor="#8e8e93"
+            android:text="0:00"
+            android:textColor="#8E8E93"
             android:textSize="12sp" />
 
         <TextView
@@ -161,8 +165,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:fontFamily="sans-serif-medium"
-            android:text="-2:41"
-            android:textColor="#8e8e93"
+            android:text="-0:00"
+            android:textColor="#8E8E93"
             android:textSize="12sp" />
     </RelativeLayout>
 
@@ -183,7 +187,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@drawable/ic_shuffle"
-            app:tint="#8e8e93" />
+            app:tint="#8E8E93" />
 
         <ImageView
             android:id="@+id/btnPrev"
@@ -193,21 +197,23 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="14dp"
             android:src="@android:drawable/ic_media_previous"
-            app:tint="#2d2f33" />
+            app:tint="#1D1D1F" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btnPlayPause"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginHorizontal="16dp"
             app:cardBackgroundColor="#FF2D55"
-            app:cardCornerRadius="36dp"
-            app:cardElevation="0dp">
+            app:cardCornerRadius="40dp"
+            app:cardElevation="6dp"
+            android:outlineAmbientShadowColor="#FF2D55"
+            android:outlineSpotShadowColor="#FF2D55">
 
             <ImageView
                 android:id="@+id/ivPlayIcon"
-                android:layout_width="34dp"
-                android:layout_height="32dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_play_modern"
                 app:tint="#FFFFFF" />
@@ -221,7 +227,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="14dp"
             android:src="@android:drawable/ic_media_next"
-            app:tint="#2d2f33" />
+            app:tint="#1D1D1F" />
 
         <ImageView
             android:id="@+id/btnUpNext"
@@ -230,59 +236,69 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@android:drawable/ic_menu_sort_by_size"
-            app:tint="#8e8e93" /> </LinearLayout>
+            app:tint="#8E8E93" />
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvLyricsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="32dp"
-        app:cardBackgroundColor="#F7F2F4"
+        android:layout_marginBottom="40dp"
+        app:cardBackgroundColor="#F2F2F7"
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="16dp">
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="20dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-bold"
-                android:letterSpacing="0.1"
-                android:text="LYRICS"
-                android:textColor="#8e8e93"
-                android:textSize="10sp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/btnLyricsView"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="2dp"
-                android:src="@android:drawable/ic_menu_zoom"
-                app:tint="#8e8e93" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-bold"
+                    android:letterSpacing="0.1"
+                    android:text="LYRICS"
+                    android:textColor="#8E8E93"
+                    android:textSize="11sp"
+                    android:layout_centerVertical="true"/>
+
+                <ImageView
+                    android:id="@+id/btnLyricsView"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@android:drawable/ic_menu_zoom"
+                    app:tint="#8E8E93" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tvSyncLyrics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-bold"
-                android:lineSpacingExtra="4dp"
-                android:maxLines="2"
-                android:text="♪ Đang tải lời bài hát ♪"
-                android:textColor="#2d2f33"
-                android:textSize="15sp" />
-        </RelativeLayout>
+                android:lineSpacingExtra="8dp"
+                android:maxLines="3"
+                android:gravity="center"
+                android:text="Đang tải lời bài hát"
+                android:textColor="#1D1D1F"
+                android:textSize="18sp" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
