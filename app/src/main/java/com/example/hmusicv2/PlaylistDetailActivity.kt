@@ -61,6 +61,9 @@ class PlaylistDetailActivity : AppCompatActivity() {
                 MyMediaPlayer.currentIndex = 0
                 val intent = Intent(this, PlayerActivity::class.java)
                 startActivity(intent)
+
+                // THÊM DÒNG NÀY VÀO ĐÂY LÀ XONG:
+                overridePendingTransition(R.anim.slide_in_up, R.anim.scale_out_back)
             } else {
                 Toast.makeText(this, "Chưa có bài hát nào!", Toast.LENGTH_SHORT).show()
             }

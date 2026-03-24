@@ -142,7 +142,17 @@ class LibraryFragment : Fragment() {
                     )
                 )
             }
-
+            if (currentTab == "ALL") {
+                // Nhét thêm mục Nhạc đã tải
+                displayList.add(
+                    Playlist(
+                        id = "OFFLINE_SONGS_SPECIAL_ID",
+                        name = "Nhạc đã tải",
+                        cover = "",
+                        songCount = DatabaseHelper(requireContext()).getAllOfflineSongs().size // Đếm số bài trong máy
+                    )
+                )
+            }
             // 3. Đổ các Playlist bình thường mà bạn tạo vào nối tiếp phía sau
             displayList.addAll(playlistList)
 
@@ -154,7 +164,13 @@ class LibraryFragment : Fragment() {
                         currentTab = "LIKED"
                         updateFilterUI(cvFilterLiked, tvFilterLiked) // Đổi màu nút trên cùng
                         refreshRecyclerView()
-                    } else {
+                    }
+                    else if (playlist.id == "OFFLINE_SONGS_SPECIAL_ID") {
+                        // MỞ MÀN HÌNH NHẠC OFFLINE
+                        val intent = Intent(requireContext(), OfflineMusicActivity::class.java)
+                        startActivity(intent)
+                    }
+                    else {
                         // Bấm vào Playlist bình thường -> Mở trang Chi tiết Playlist
                         val intent = Intent(requireContext(), PlaylistDetailActivity::class.java)
                         intent.putExtra("PLAYLIST_ID", playlist.id)
@@ -171,6 +187,7 @@ class LibraryFragment : Fragment() {
                     if (playlist.id != "LIKED_SONGS_SPECIAL_ID") {
                         showMoreOptionsBottomSheet(playlist)
                     }
+
                 }
             )
             rvLibrary.adapter = adapter
@@ -179,17 +196,16 @@ class LibraryFragment : Fragment() {
             val adapter = LikedSongAdapter(
                 songList = likedSongList,
                 onSongClick = { song, position ->
-                    // FIX LỖI KHÔNG PHÁT ĐƯỢC NHẠC: Truyền dữ liệu sang PlayerActivity
                     MyMediaPlayer.currentPlaylist = ArrayList(likedSongList)
                     MyMediaPlayer.currentIndex = position
 
                     val intent = Intent(requireContext(), PlayerActivity::class.java)
-                    // Ép kiểu ArrayList/Serializable để gửi danh sách bài hát đi
-                    intent.putExtra("SONG_LIST", ArrayList(MyMediaPlayer.currentPlaylist))
-                    intent.putExtra("SONG_POSITION", MyMediaPlayer.currentIndex)
                     startActivity(intent)
+
+                    // THÊM DÒNG NÀY (Nhớ có chữ activity?. vì đây là Fragment)
+                    activity?.overridePendingTransition(R.anim.slide_in_up, R.anim.scale_out_back)
                 },
-                onUnlikeClick = { song ->
+                onUnlikeClick = { song, position ->  // 👉 THÊM CHỮ ", position" VÀO ĐÂY NÈ
                     // Xóa bài hát khỏi nhánh LikedSongs trên Firebase
                     if (userId != null && song.id != null) {
                         dbRefLikedSongs.child(song.id!!).removeValue().addOnSuccessListener {
