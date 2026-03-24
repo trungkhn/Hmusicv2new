@@ -1,15 +1,24 @@
 package com.example.hmusicv2
 
+import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -19,15 +28,16 @@ import com.google.firebase.database.ValueEventListener
 class LibraryFragment : Fragment() {
 
     private lateinit var rvLibrary: RecyclerView
+    private lateinit var btnAddPlaylist: ImageView
 
-    // 2 Kho chứa dữ liệu riêng biệt
-    private var playlistList = mutableListOf<LibraryPlaylist>()
+    // Dữ liệu
+    private var playlistList = mutableListOf<Playlist>() // Sử dụng class Playlist mới
     private var likedSongList = mutableListOf<Song>()
 
-    // Đánh dấu xem người dùng đang đứng ở Tab nào
-    private var currentTab = "ALL" // "ALL", "PLAYLISTS", hoặc "LIKED"
+    // Tab hiện tại
+    private var currentTab = "ALL" // "ALL", "PLAYLISTS", "LIKED"
 
-    // Các nút bấm
+    // Nút lọc
     private lateinit var cvFilterAll: CardView
     private lateinit var tvFilterAll: TextView
     private lateinit var cvFilterPlaylists: CardView
@@ -35,16 +45,30 @@ class LibraryFragment : Fragment() {
     private lateinit var cvFilterLiked: CardView
     private lateinit var tvFilterLiked: TextView
 
+    // Cấu hình Firebase
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
+    private val dbRefPlaylists by lazy {
+        FirebaseDatabase.getInstance("https://hmusicv2-default-rtdb.asia-southeast1.firebasedatabase.app/")
+            .reference.child("Users").child(userId ?: "").child("Playlists")
+    }
+    private val dbRefLikedSongs by lazy {
+        FirebaseDatabase.getInstance("https://hmusicv2-default-rtdb.asia-southeast1.firebasedatabase.app/")
+            .reference.child("Users").child(userId ?: "").child("LikedSongs")
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_library, container, false)
 
-        rvLibrary = view.findViewById(R.id.rvLikedSongs)
+        rvLibrary = view.findViewById(R.id.rvLibrary) // Sửa lại ID cho đúng file giao diện mới
         rvLibrary.layoutManager = LinearLayoutManager(requireContext())
 
-        // 1. Ánh xạ các nút
+        btnAddPlaylist = view.findViewById(R.id.btnAddPlaylist)
+
+        // 1. Ánh xạ các nút lọc
         cvFilterAll = view.findViewById(R.id.cvFilterAll)
         tvFilterAll = view.findViewById(R.id.tvFilterAll)
         cvFilterPlaylists = view.findViewById(R.id.cvFilterPlaylists)
@@ -52,93 +76,154 @@ class LibraryFragment : Fragment() {
         cvFilterLiked = view.findViewById(R.id.cvFilterLiked)
         tvFilterLiked = view.findViewById(R.id.tvFilterLiked)
 
-        // 2. Chạy lên Firebase tải ĐỒNG THỜI cả 2 kho về
+        // 2. Bắt sự kiện tạo Playlist mới
+        btnAddPlaylist.setOnClickListener {
+            showAddOrEditPlaylistDialog()
+        }
+
+        // 3. Tải dữ liệu Firebase
         loadPlaylistsFromFirebase()
         loadLikedSongsFromFirebase()
 
-        // 3. Sự kiện bấm nút "All" (Tạm thời cho hiện Playlists)
+        // 4. Cài đặt sự kiện chuyển Tab
+        setupTabClickListeners()
+
+        return view
+    }
+
+    private fun setupTabClickListeners() {
         cvFilterAll.setOnClickListener {
             currentTab = "ALL"
             updateFilterUI(cvFilterAll, tvFilterAll)
             refreshRecyclerView()
         }
 
-        // 4. Sự kiện bấm nút "Playlists"
         cvFilterPlaylists.setOnClickListener {
             currentTab = "PLAYLISTS"
             updateFilterUI(cvFilterPlaylists, tvFilterPlaylists)
             refreshRecyclerView()
         }
 
-        // 5. Sự kiện bấm nút "Liked Songs"
         cvFilterLiked.setOnClickListener {
             currentTab = "LIKED"
             updateFilterUI(cvFilterLiked, tvFilterLiked)
             refreshRecyclerView()
         }
-
-        return view
     }
 
-    // Hàm đổi màu nút: Nút nào được chọn thì Xanh, còn lại Xám
+    // Đổi màu nút chuẩn giao diện Sáng
     private fun updateFilterUI(selectedCard: CardView, selectedText: TextView) {
-        cvFilterAll.setCardBackgroundColor(Color.parseColor("#282828"))
-        tvFilterAll.setTextColor(Color.WHITE)
-        cvFilterPlaylists.setCardBackgroundColor(Color.parseColor("#282828"))
-        tvFilterPlaylists.setTextColor(Color.WHITE)
-        cvFilterLiked.setCardBackgroundColor(Color.parseColor("#282828"))
-        tvFilterLiked.setTextColor(Color.WHITE)
+        // Reset tất cả về màu Trắng/Xám
+        cvFilterAll.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
+        tvFilterAll.setTextColor(Color.parseColor("#1D1D1F"))
+        cvFilterPlaylists.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
+        tvFilterPlaylists.setTextColor(Color.parseColor("#1D1D1F"))
+        cvFilterLiked.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
+        tvFilterLiked.setTextColor(Color.parseColor("#1D1D1F"))
 
-        selectedCard.setCardBackgroundColor(Color.parseColor("#1DB954"))
-        selectedText.setTextColor(Color.BLACK)
+        // Nút được chọn thành màu Hồng đỏ iOS
+        selectedCard.setCardBackgroundColor(Color.parseColor("#FF2D55"))
+        selectedText.setTextColor(Color.WHITE)
     }
 
-    // Hàm quyết định xem nhét Adapter nào vào RecyclerView
     private fun refreshRecyclerView() {
         if (currentTab == "ALL" || currentTab == "PLAYLISTS") {
-            // Nhét Adapter của Playlist
-            val adapter = LibraryPlaylistAdapter(playlistList) { playlist ->
-                showDeleteDialog(playlist.name)
+            // 1. Tạo một danh sách hiển thị tạm thời
+            val displayList = mutableListOf<Playlist>()
+
+            // 2. Nếu đang ở tab "Tất cả", nhét thêm mục "Bài hát đã thích" lên đầu tiên
+            if (currentTab == "ALL") {
+                displayList.add(
+                    Playlist(
+                        id = "LIKED_SONGS_SPECIAL_ID", // Đặt 1 ID đặc biệt để nhận diện
+                        name = "Bài hát đã thích",
+                        cover = "",
+                        songCount = likedSongList.size // Lấy số lượng bài hát thực tế
+                    )
+                )
             }
+
+            // 3. Đổ các Playlist bình thường mà bạn tạo vào nối tiếp phía sau
+            displayList.addAll(playlistList)
+
+            val adapter = LibraryPlaylistAdapter(
+                playlistList = displayList,
+                onPlaylistClick = { playlist ->
+                    if (playlist.id == "LIKED_SONGS_SPECIAL_ID") {
+                        // CHỨC NĂNG CHUYỂN TAB: Nếu bấm vào "Bài hát đã thích", tự động nhảy sang tab Liked
+                        currentTab = "LIKED"
+                        updateFilterUI(cvFilterLiked, tvFilterLiked) // Đổi màu nút trên cùng
+                        refreshRecyclerView()
+                    } else {
+                        // Bấm vào Playlist bình thường -> Mở trang Chi tiết Playlist
+                        val intent = Intent(requireContext(), PlaylistDetailActivity::class.java)
+                        intent.putExtra("PLAYLIST_ID", playlist.id)
+                        intent.putExtra("PLAYLIST_NAME", playlist.name)
+                        intent.putExtra("PLAYLIST_COVER", playlist.cover)
+                        startActivity(intent)
+
+                        // THÊM DÒNG NÀY:
+                        activity?.overridePendingTransition(R.anim.slide_in_up, android.R.anim.fade_out)
+                    }
+                },
+                onPlaylistLongClick = { playlist ->
+                    // CHẶN SỬA/XÓA: Không cho phép sửa hay xóa mục "Đã thích" của hệ thống
+                    if (playlist.id != "LIKED_SONGS_SPECIAL_ID") {
+                        showMoreOptionsBottomSheet(playlist)
+                    }
+                }
+            )
             rvLibrary.adapter = adapter
+
         } else if (currentTab == "LIKED") {
-            // Nhét Adapter của Bài hát (cái mà mình dùng ở Home/Search)
-            val adapter = SongAdapter(likedSongList)
+            val adapter = LikedSongAdapter(
+                songList = likedSongList,
+                onSongClick = { song, position ->
+                    // FIX LỖI KHÔNG PHÁT ĐƯỢC NHẠC: Truyền dữ liệu sang PlayerActivity
+                    MyMediaPlayer.currentPlaylist = ArrayList(likedSongList)
+                    MyMediaPlayer.currentIndex = position
+
+                    val intent = Intent(requireContext(), PlayerActivity::class.java)
+                    // Ép kiểu ArrayList/Serializable để gửi danh sách bài hát đi
+                    intent.putExtra("SONG_LIST", ArrayList(MyMediaPlayer.currentPlaylist))
+                    intent.putExtra("SONG_POSITION", MyMediaPlayer.currentIndex)
+                    startActivity(intent)
+                },
+                onUnlikeClick = { song ->
+                    // Xóa bài hát khỏi nhánh LikedSongs trên Firebase
+                    if (userId != null && song.id != null) {
+                        dbRefLikedSongs.child(song.id!!).removeValue().addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Đã bỏ thích", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            )
             rvLibrary.adapter = adapter
         }
     }
-
     private fun loadPlaylistsFromFirebase() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val dbRef = FirebaseDatabase.getInstance("https://hmusicv2-default-rtdb.asia-southeast1.firebasedatabase.app/")
-            .reference.child("Users").child(userId).child("Playlists")
-
-        dbRef.addValueEventListener(object : ValueEventListener {
+        if (userId == null) return
+        dbRefPlaylists.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 playlistList.clear()
                 for (playSnapshot in snapshot.children) {
-                    val playlistName = playSnapshot.child("info").child("name").value?.toString() ?: playSnapshot.key ?: "Không tên"
-                    val songsSnapshot = playSnapshot.child("songs")
-                    val songCount = songsSnapshot.childrenCount.toInt()
+                    val id = playSnapshot.key
+                    val name = playSnapshot.child("name").value?.toString() ?: "Không tên"
+                    // Nếu bạn lưu ảnh cover trên Firebase thì lấy ở đây
+                    val coverUrl = playSnapshot.child("cover").value?.toString()
+                    val songCount = playSnapshot.child("songCount").value.toString().toIntOrNull() ?: 0
 
-                    var coverUrl: String? = null
-                    if (songCount > 0) {
-                        coverUrl = songsSnapshot.children.first().child("cover").value?.toString()
-                    }
-                    playlistList.add(LibraryPlaylist(playlistName, songCount, coverUrl))
+                    playlistList.add(Playlist(id, name, coverUrl, songCount))
                 }
-                refreshRecyclerView() // Có dữ liệu mới thì tự động cập nhật lại màn hình
+                if(currentTab == "ALL" || currentTab == "PLAYLISTS") refreshRecyclerView()
             }
             override fun onCancelled(error: DatabaseError) {}
         })
     }
 
     private fun loadLikedSongsFromFirebase() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val dbRef = FirebaseDatabase.getInstance("https://hmusicv2-default-rtdb.asia-southeast1.firebasedatabase.app/")
-            .reference.child("Users").child(userId).child("LikedSongs")
-
-        dbRef.addValueEventListener(object : ValueEventListener {
+        if (userId == null) return
+        dbRefLikedSongs.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 likedSongList.clear()
                 for (songSnapshot in snapshot.children) {
@@ -147,30 +232,84 @@ class LibraryFragment : Fragment() {
                         likedSongList.add(song)
                     }
                 }
-                refreshRecyclerView() // Có dữ liệu mới thì tự động cập nhật lại màn hình
+                if(currentTab == "LIKED") refreshRecyclerView()
             }
             override fun onCancelled(error: DatabaseError) {}
         })
     }
 
-    private fun showDeleteDialog(playlistName: String) {
-        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-        builder.setTitle("Xóa Playlist")
-        builder.setMessage("Bạn có chắc chắn muốn xóa danh sách phát '$playlistName' không?")
+    // --- CÁC HÀM XỬ LÝ THÊM/SỬA/XÓA ---
 
-        builder.setPositiveButton("Xóa") { dialog, _ ->
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
-            if (userId != null) {
-                val dbRef = FirebaseDatabase.getInstance("https://hmusicv2-default-rtdb.asia-southeast1.firebasedatabase.app/")
-                    .reference.child("Users").child(userId).child("Playlists").child(playlistName)
+    private fun showAddOrEditPlaylistDialog(playlistToEdit: Playlist? = null) {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_add_playlist)
 
-                dbRef.removeValue().addOnSuccessListener {
-                    android.widget.Toast.makeText(requireContext(), "Đã xóa $playlistName", android.widget.Toast.LENGTH_SHORT).show()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        val tvTitle = dialog.findViewById<TextView>(R.id.tvDialogTitle)
+        val etName = dialog.findViewById<EditText>(R.id.etPlaylistName)
+        val btnCancel = dialog.findViewById<TextView>(R.id.btnCancel)
+        val btnSave = dialog.findViewById<androidx.cardview.widget.CardView>(R.id.btnSave)
+
+        if (playlistToEdit != null) {
+            tvTitle.text = "Đổi tên danh sách"
+
+            etName.setText(playlistToEdit.name)
+        }
+
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        btnSave.setOnClickListener {
+            val newName = etName.text.toString().trim()
+            if (newName.isEmpty()) {
+                Toast.makeText(requireContext(), "Vui lòng nhập tên!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (playlistToEdit == null) {
+                // Tạo mới
+                val newId = dbRefPlaylists.push().key ?: return@setOnClickListener
+                val newPlaylist = Playlist(id = newId, name = newName, songCount = 0)
+                dbRefPlaylists.child(newId).setValue(newPlaylist).addOnSuccessListener {
+                    Toast.makeText(requireContext(), "Đã tạo Playlist!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                // Sửa tên
+                dbRefPlaylists.child(playlistToEdit.id!!).child("name").setValue(newName).addOnSuccessListener {
+                    Toast.makeText(requireContext(), "Đã cập nhật!", Toast.LENGTH_SHORT).show()
                 }
             }
             dialog.dismiss()
         }
-        builder.setNegativeButton("Hủy") { dialog, _ -> dialog.dismiss() }
-        builder.show()
+        dialog.show()
+    }
+
+    fun showMoreOptionsBottomSheet(playlist: Playlist) {
+        val dialog = BottomSheetDialog(requireContext())
+        val view = layoutInflater.inflate(R.layout.layout_playlist_more_bottom_sheet, null)
+        dialog.setContentView(view)
+
+        // Xóa nền vuông
+        dialog.setOnShowListener { dialogInterface ->
+            val d = dialogInterface as BottomSheetDialog
+            val bottomSheet = d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundColor(Color.TRANSPARENT)
+        }
+
+        view.findViewById<LinearLayout>(R.id.btnEditPlaylist).setOnClickListener {
+            dialog.dismiss()
+            showAddOrEditPlaylistDialog(playlist)
+        }
+
+        view.findViewById<LinearLayout>(R.id.btnDeletePlaylist).setOnClickListener {
+            dbRefPlaylists.child(playlist.id!!).removeValue().addOnSuccessListener {
+                Toast.makeText(requireContext(), "Đã xóa danh sách phát", Toast.LENGTH_SHORT).show()
+            }
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }

@@ -15,8 +15,8 @@ import com.google.firebase.database.FirebaseDatabase
 class SearchFragment : Fragment() {
 
     private lateinit var adapter: SongAdapter
-    private var fullSongList = mutableListOf<Song>() // Kho chứa toàn bộ nhạc từ Firebase
-    private var filteredList = mutableListOf<Song>() // Kho chứa nhạc đã được lọc
+    private var fullSongList = mutableListOf<Song>()
+    private var filteredList = mutableListOf<Song>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,12 +28,9 @@ class SearchFragment : Fragment() {
         val rvSearchResults = view.findViewById<RecyclerView>(R.id.rvSearchResults)
 
         rvSearchResults.layoutManager = LinearLayoutManager(requireContext())
-
-        // Khởi tạo Adapter với danh sách rỗng (chưa gõ gì thì chưa hiện)
         adapter = SongAdapter(filteredList)
         rvSearchResults.adapter = adapter
 
-        // 1. Tải toàn bộ nhạc từ mây về "nằm vùng" sẵn
         val database = FirebaseDatabase.getInstance("https://hmusicv2-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
         database.child("Songs").get().addOnSuccessListener { snapshot ->
             fullSongList.clear()
@@ -45,11 +42,9 @@ class SearchFragment : Fragment() {
             }
         }
 
-        // 2. Lắng nghe từng nhịp gõ phím của dũng sĩ
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
                 filterSongs(query)
@@ -59,20 +54,15 @@ class SearchFragment : Fragment() {
         return view
     }
 
-    // 3. Hàm "Đãi cát tìm vàng"
     private fun filterSongs(query: String) {
         filteredList.clear()
-
         if (query.isNotEmpty()) {
-            // Duyệt qua toàn bộ kho nhạc
             for (song in fullSongList) {
-                // Nếu tên bài hát có chứa chữ vừa gõ (không phân biệt hoa thường)
                 if (song.title?.lowercase()?.contains(query.lowercase()) == true) {
-                    filteredList.add(song) // Ném vào danh sách kết quả
+                    filteredList.add(song)
                 }
             }
         }
-        // Hét lên cho Adapter biết: "Cập nhật giao diện ngay!"
         adapter.notifyDataSetChanged()
     }
 }

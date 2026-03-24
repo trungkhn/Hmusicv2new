@@ -8,23 +8,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-// Cấu trúc dữ liệu cho Playlist hiển thị trong Thư Viện
-data class LibraryPlaylist(
-    val name: String,
-    val songCount: Int,
-    val coverUrl: String?
-)
-
 class LibraryPlaylistAdapter(
-    private val playlists: List<LibraryPlaylist>,
-    private val onMoreClick: (LibraryPlaylist) -> Unit // Xử lý khi bấm nút 3 chấm
+    private val playlistList: List<Playlist>,
+    private val onPlaylistClick: (Playlist) -> Unit,      // Sự kiện: Chạm nhẹ
+    private val onPlaylistLongClick: (Playlist) -> Unit   // Sự kiện: Bấm giữ
 ) : RecyclerView.Adapter<LibraryPlaylistAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val ivCover: ImageView = view.findViewById(R.id.ivLibPlaylistCover)
-        val tvName: TextView = view.findViewById(R.id.tvLibPlaylistName)
-        val tvCount: TextView = view.findViewById(R.id.tvLibSongCount)
-        val btnMore: ImageView = view.findViewById(R.id.btnLibMore)
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val ivCover: ImageView = itemView.findViewById(R.id.ivLibPlaylistCover)
+        val tvName: TextView = itemView.findViewById(R.id.tvLibPlaylistName)
+        val tvCount: TextView = itemView.findViewById(R.id.tvLibSongCount)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,22 +26,42 @@ class LibraryPlaylistAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val playlist = playlists[position]
+        val playlist = playlistList[position]
+
         holder.tvName.text = playlist.name
         holder.tvCount.text = "${playlist.songCount} bài hát"
 
-        // Nạp ảnh bìa (Ảnh của bài hát đầu tiên trong Playlist)
-        if (playlist.coverUrl != null) {
-            Glide.with(holder.itemView.context).load(playlist.coverUrl).into(holder.ivCover)
+        // PHÂN BIỆT MỤC "ĐÃ THÍCH" VÀ "PLAYLIST BÌNH THƯỜNG"
+        if (playlist.id == "LIKED_SONGS_SPECIAL_ID") {
+            // 1. Giao diện cho mục Đã thích: Nền khối màu Hồng, Icon Ngôi sao/Trái tim màu trắng
+            (holder.ivCover.parent as androidx.cardview.widget.CardView).setCardBackgroundColor(android.graphics.Color.parseColor("#FF2D55"))
+            holder.ivCover.setImageResource(android.R.drawable.btn_star_big_on) // Dùng icon ngôi sao mặc định
+            holder.ivCover.setColorFilter(android.graphics.Color.WHITE)
+
         } else {
-            holder.ivCover.setImageResource(android.R.drawable.ic_menu_gallery) // Ảnh mặc định nếu chưa có bài nào
+            // 2. Giao diện Playlist bình thường: Nền xám nhạt, Tải ảnh bằng Glide
+            (holder.ivCover.parent as androidx.cardview.widget.CardView).setCardBackgroundColor(android.graphics.Color.parseColor("#E5E5EA"))
+
+            if (!playlist.cover.isNullOrEmpty()) {
+                holder.ivCover.clearColorFilter()
+                Glide.with(holder.itemView.context).load(playlist.cover).into(holder.ivCover)
+            } else {
+                holder.ivCover.setImageResource(android.R.drawable.ic_menu_gallery)
+                holder.ivCover.setColorFilter(android.graphics.Color.parseColor("#8E8E93"))
+            }
         }
 
-        // Bắt sự kiện bấm nút 3 chấm
-        holder.btnMore.setOnClickListener {
-            onMoreClick(playlist)
+        // Chạm nhẹ
+        holder.itemView.setOnClickListener {
+            onPlaylistClick(playlist)
+        }
+
+        // Bấm giữ
+        holder.itemView.setOnLongClickListener {
+            onPlaylistLongClick(playlist)
+            true
         }
     }
 
-    override fun getItemCount() = playlists.size
+    override fun getItemCount(): Int = playlistList.size
 }

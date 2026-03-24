@@ -3,39 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:background="?attr/selectableItemBackground"
     android:gravity="center_vertical"
-    android:paddingVertical="8dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:orientation="horizontal"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="10dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:cardCornerRadius="4dp"
-        app:cardBackgroundColor="#282828">
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        app:cardBackgroundColor="#F2F2F7"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
         <ImageView
             android:id="@+id/ivPlaylistCover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery"/>
+            android:src="@android:drawable/ic_menu_gallery"
+            app:tint="#8E8E93" />
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tvPlaylistName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_weight="1"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:singleLine="true"
         android:text="Tên Playlist"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:layout_marginStart="16dp"/>
+        android:textColor="#1D1D1F"
+        android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/btnToggleAdd"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:src="@android:drawable/ic_input_add"
-        app:tint="@color/white"
-        android:padding="4dp"/>
+        app:tint="#FF2D55" />
 </LinearLayout>

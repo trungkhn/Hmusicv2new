@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#F2F2F7"
     android:orientation="vertical"
     android:paddingTop="56dp">
 
@@ -18,18 +18,19 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:letterSpacing="-0.02"
-            android:text="Library"
-            android:textColor="#2d2f33"
+            android:text="Thư viện"
+            android:textColor="#1D1D1F"
             android:textSize="34sp" />
 
         <ImageView
+            android:id="@+id/btnAddPlaylist"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="8dp"
-            android:src="@android:drawable/ic_menu_more"
+            android:src="@android:drawable/ic_menu_add"
             app:tint="#FF2D55" />
     </RelativeLayout>
 
@@ -62,7 +63,7 @@
                     android:fontFamily="sans-serif-bold"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="10dp"
-                    android:text="All"
+                    android:text="Tất cả"
                     android:textColor="#ffffff"
                     android:textSize="14sp" />
             </androidx.cardview.widget.CardView>
@@ -72,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                app:cardBackgroundColor="#f0f0f6"
+                app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp">
 
@@ -83,8 +84,8 @@
                     android:fontFamily="sans-serif-medium"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="10dp"
-                    android:text="Playlists"
-                    android:textColor="#2d2f33"
+                    android:text="Danh sách phát"
+                    android:textColor="#1D1D1F"
                     android:textSize="14sp" />
             </androidx.cardview.widget.CardView>
 
@@ -93,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                app:cardBackgroundColor="#f0f0f6"
+                app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp">
 
@@ -104,17 +105,18 @@
                     android:fontFamily="sans-serif-medium"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="10dp"
-                    android:text="Liked Songs"
-                    android:textColor="#2d2f33"
+                    android:text="Đã thích"
+                    android:textColor="#1D1D1F"
                     android:textSize="14sp" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </HorizontalScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvLikedSongs"
+        android:id="@+id/rvLibrary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingHorizontal="8dp"
-        android:paddingBottom="160dp" /> </LinearLayout>
+        android:paddingBottom="160dp" />
+</LinearLayout>

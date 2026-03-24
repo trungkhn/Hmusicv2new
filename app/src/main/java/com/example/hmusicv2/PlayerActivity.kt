@@ -67,7 +67,12 @@ class PlayerActivity : AppCompatActivity() {
         tvTotalTime = findViewById(R.id.tvTotalTime)
         btnLike = findViewById(R.id.btnLike)
         btnShuffle = findViewById(R.id.btnShuffle)
+        val btnAdd = findViewById<ImageView>(R.id.btnAdd)
 
+// Bắt sự kiện mở bảng Thêm vào Playlist
+        btnAdd.setOnClickListener {
+            showAddToPlaylistBottomSheet()
+        }
         val btnBack = findViewById<ImageView>(R.id.btnBack)
         val btnPlayPause = findViewById<CardView>(R.id.btnPlayPause)
         val btnNext = findViewById<ImageView>(R.id.btnNext)
@@ -123,7 +128,116 @@ class PlayerActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(sb: SeekBar?) {}
         })
     }
+    // 1. HÀM MỞ BẢNG DANH SÁCH PLAYLIST HIỆN TẠI (VUỐT TỪ DƯỚI LÊN)
+    private fun showAddToPlaylistBottomSheet() {
+        val currentSong = MyMediaPlayer.currentPlaylist[MyMediaPlayer.currentIndex]
+        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.layout_add_to_playlist_bottom_sheet, null)
+        dialog.setContentView(view)
 
+        // Phép thuật tàng hình khung vuông, giữ lại góc bo tròn sâu của Liquid Design
+        dialog.setOnShowListener { dialogInterface ->
+            val d = dialogInterface as com.google.android.material.bottomsheet.BottomSheetDialog
+            val bottomSheet = d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        }
+
+        val btnCreateNew = view.findViewById<androidx.cardview.widget.CardView>(R.id.btnCreateNewPlaylist)
+        val rvPlaylists = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rvPlaylistsBottomSheet)
+
+        // Nút Tạo Playlist mới ngay tại đây
+        btnCreateNew.setOnClickListener {
+            dialog.dismiss()
+            showCreatePlaylistDialog(currentSong)
+        }
+
+        // Tải danh sách Playlist từ Firebase để chọn
+        rvPlaylists.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        val userId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val dbRef = com.google.firebase.database.FirebaseDatabase.getInstance("https://hmusicv2-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users").child(userId).child("Playlists")
+
+        val playlists = mutableListOf<Playlist>()
+        val adapter = LibraryPlaylistAdapter(
+            playlistList = playlists,
+            onPlaylistClick = { playlist ->
+                // KHI BẤM VÀO 1 PLAYLIST -> THÊM BÀI HÁT VÀO PLAYLIST ĐÓ
+                if (playlist.id != null) {
+                    val songId = currentSong.id ?: System.currentTimeMillis().toString()
+                    dbRef.child(playlist.id!!).child("songs").child(songId).setValue(currentSong)
+                        .addOnSuccessListener {
+                            // Cập nhật lại số lượng bài hát và ảnh bìa cho Playlist
+                            val updates = mapOf(
+                                "songCount" to playlist.songCount + 1,
+                                "cover" to currentSong.cover // Lấy ảnh bài hát làm bìa playlist nếu thích
+                            )
+                            dbRef.child(playlist.id!!).updateChildren(updates)
+                            android.widget.Toast.makeText(this, "Đã lưu vào ${playlist.name}", android.widget.Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
+                }
+            },
+            onPlaylistLongClick = { /* Không làm gì ở đây */ }
+        )
+        rvPlaylists.adapter = adapter
+
+        // Đổ dữ liệu từ Firebase vào
+        dbRef.addListenerForSingleValueEvent(object : com.google.firebase.database.ValueEventListener {
+            override fun onDataChange(snapshot: com.google.firebase.database.DataSnapshot) {
+                playlists.clear()
+                for (playSnapshot in snapshot.children) {
+                    val id = playSnapshot.key
+                    val name = playSnapshot.child("name").value?.toString() ?: "Không tên"
+                    val coverUrl = playSnapshot.child("cover").value?.toString()
+                    val songCount = playSnapshot.child("songCount").value.toString().toIntOrNull() ?: 0
+                    playlists.add(Playlist(id, name, coverUrl, songCount))
+                }
+                adapter.notifyDataSetChanged()
+            }
+            override fun onCancelled(error: com.google.firebase.database.DatabaseError) {}
+        })
+
+        dialog.show()
+    }
+
+    // 2. HÀM MỞ HỘP THOẠI NHẬP TÊN PLAYLIST MỚI (BO GÓC VIÊN THUỐC)
+    private fun showCreatePlaylistDialog(songToAdd: Song) {
+        val dialog = android.app.Dialog(this)
+        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_add_playlist)
+        dialog.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        dialog.window?.setLayout(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        val etName = dialog.findViewById<android.widget.EditText>(R.id.etPlaylistName)
+        val btnCancel = dialog.findViewById<android.widget.TextView>(R.id.btnCancel)
+        val btnSave = dialog.findViewById<androidx.cardview.widget.CardView>(R.id.btnSave)
+
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        btnSave.setOnClickListener {
+            val newName = etName.text.toString().trim()
+            if (newName.isEmpty()) {
+                android.widget.Toast.makeText(this, "Vui lòng nhập tên!", android.widget.Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val userId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
+            val dbRef = com.google.firebase.database.FirebaseDatabase.getInstance("https://hmusicv2-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users").child(userId).child("Playlists")
+
+            val newId = dbRef.push().key ?: return@setOnClickListener
+
+            // Tạo Playlist mới và nhét luôn bài hát hiện tại vào
+            val newPlaylist = Playlist(id = newId, name = newName, songCount = 1, cover = songToAdd.cover)
+
+            dbRef.child(newId).setValue(newPlaylist).addOnSuccessListener {
+                val songId = songToAdd.id ?: System.currentTimeMillis().toString()
+                dbRef.child(newId).child("songs").child(songId).setValue(songToAdd)
+
+                android.widget.Toast.makeText(this, "Đã tạo và thêm vào Playlist!", android.widget.Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
+    }
     private fun loadSong() {
         if (songList.isEmpty()) return
         val song = songList[currentPosition]
